@@ -3,7 +3,7 @@
  * Creates a dropdown-like button with checkboxes. 
  *
  * Project started on: Tue, 14 Jan 2014 - 5:18:02 PM
- * Current version: 4.0.0
+ * Current version: 4.0.1
  * 
  * Released under the MIT License
  * --------------------------------------------------------------------------------
@@ -553,6 +553,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         $scope.varButtonLabel += '(' + $scope.outputModel.length + ')';                        
                     }
                 }
+                // Display how much inputs are checked
                 if(!isNaN($scope.outputModel.length - tempMaxLabels) && ($scope.outputModel.length - tempMaxLabels) > 0){
                     $scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '</div><span class="caretMask"></span></span><span class="caret">'+( $scope.outputModel.length - tempMaxLabels ) +'+</span>' );  
                 }
