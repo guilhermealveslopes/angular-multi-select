@@ -513,7 +513,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
 
             // refresh button label
             $scope.refreshButton = function() {
-
+                var tempMaxLabels;
                 $scope.varButtonLabel   = '';                
                 var ctr                 = 0;                  
 
@@ -523,7 +523,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     $scope.varButtonLabel = $scope.lang.nothingSelected;
                 }
                 else {                
-                    var tempMaxLabels = $scope.outputModel.length;
+                    tempMaxLabels = $scope.outputModel.length;
                     if ( typeof attrs.maxLabels !== 'undefined' && attrs.maxLabels !== '' ) {
                         tempMaxLabels = attrs.maxLabels;
                     }
@@ -553,7 +553,10 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         $scope.varButtonLabel += '(' + $scope.outputModel.length + ')';                        
                     }
                 }
-                $scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="caret"></span>' );                
+                if(!isNaN($scope.outputModel.length - tempMaxLabels) && ($scope.outputModel.length - tempMaxLabels) > 0){
+                    $scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '</div><span class="caretMask"></span></span><span class="caret">'+( $scope.outputModel.length - tempMaxLabels ) +'+</span>' );  
+                }
+                              
             }
 
             // Check if a checkbox is disabled or enabled. It will check the granular control (disableProperty) and global control (isDisabled)
@@ -966,8 +969,8 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
             $scope.icon.tickMark = $sce.trustAsHtml( $scope.icon.tickMark );
                 
             // min length of keyword to trigger the filter function
-            if ( typeof attrs.minSearchLength !== 'undefined' && parseInt( attrs.minSearchLength ) > 0 ) {
-                vMinSearchLength = Math.floor( parseInt( attrs.minSearchLength ) );
+            if ( typeof attrs.MinSearchLength !== 'undefined' && parseInt( attrs.MinSearchLength ) > 0 ) {
+                vMinSearchLength = Math.floor( parseInt( attrs.MinSearchLength ) );
             }
 
             /*******************************************************
@@ -1081,7 +1084,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                 '<div class="checkBoxContainer">'+
                     '<div '+
                         'ng-repeat="item in filteredModel | filter:removeGroupEndMarker" class="multiSelectItem"'+
-                        'ng-class="{selected: item[ tickProperty ], horizontal: orientationH, vertical: orientationV, multiSelectGroup:item[ groupProperty ], disabled:itemIsDisabled( item )}"'+
+                        'ng-class="[{selected: item[ tickProperty ], horizontal: orientationH, vertical: orientationV, multiSelectGroup:item[ groupProperty ], disabled:itemIsDisabled( item )}, item.customClass]"'+
                         'ng-click="syncItems( item, $event, $index );" '+
                         'ng-mouseleave="removeFocusStyle( tabIndex );"> '+
                         // this is the spacing for grouped items
